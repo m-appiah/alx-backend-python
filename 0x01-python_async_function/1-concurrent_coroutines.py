@@ -12,7 +12,7 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     Wait for `n` random amounts of time up to `max_delay` seconds.
     Returns a list of the wait times, sorted in ascending order.
     """
-    wait_times = await asyncio.gather(
+    delay = await asyncio.gather(
         *tuple(map(lambda _: wait_random(max_delay), range(n)))
     )
-    return sorted(wait_times)
+    return sorted(delay)
