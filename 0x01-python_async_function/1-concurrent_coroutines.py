@@ -2,23 +2,17 @@
 """
 A module for asynchronous tasks using asyncio.
 """
-
 import asyncio
-from 0-basic_async_syntax import wait_random
+from typing import List
+wait_random = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> list:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """
-    Executes wait_random n times with the specified max_delay.
-
-    Args:
-        n (int): The number of times to call wait_random.
-        max_delay (int): The maximum delay passed to wait_random.
-
-    Returns:
-        list: A list of float values representing
-        the delays, in ascending order.
+    Wait for `n` random amounts of time up to `max_delay` seconds.
+    Returns a list of the wait times, sorted in ascending order.
     """
-    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
-    delays = [await task for task in asyncio.as_completed(tasks)]
-    return delays
+    wait_times = await asyncio.gather(
+        *tuple(map(lambda _: wait_random(max_delay), range(n)))
+    )
+    return sorted(wait_times)
